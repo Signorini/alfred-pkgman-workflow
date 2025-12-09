@@ -1,11 +1,15 @@
 <?php
+
 namespace WillFarrell\AlfredPkgMan;
 
+// README: Turn off all error reporting
+// Comment this out to enable error reporting for debugging
+error_reporting(0);
 
 class Npm extends Repo
 {
     protected $id         = 'npm';
-    protected $url        = 'https://npms.io';
+    protected $url        = 'https://npmjs.com';
     protected $search_url = 'https://api.npms.io/v2/search?q=';
 
     public function search($query)
@@ -20,16 +24,21 @@ class Npm extends Repo
             $query,
             "{$this->search_url}{$query}&size={$this->max_return}"
         );
+
         foreach ($this->pkgs->results as $pkg) {
-            $p = $pkg->package;
+            $p    = $pkg->package;
             $name = $p->name;
-            $uid = "{$this->id}-{$name}-{$p->version}";
+            $uid  = "{$this->id}-{$name}-{$p->version}";
+
+            // README: Description is not required to publish a module, so we check for it
+            //          and fall back to an empty string if it is missing
+            $description = $p->description ?? '';
 
             $this->cache->w->result(
                 $uid,
                 $this->makeArg($name, $p->links->npm, "{$p->name}: {$p->version}"),
                 $name,
-                $p->description,
+                $description,
                 "icon-cache/{$this->id}.png"
             );
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace WillFarrell\AlfredPkgMan;
 
 
@@ -62,5 +63,5 @@ class Stpm extends Repo
 }
 
 // Test code, uncomment to debug this script from the command-line
-// $repo = new Atom();
+// $repo = new Stpm();
 // echo $repo->search('q');
